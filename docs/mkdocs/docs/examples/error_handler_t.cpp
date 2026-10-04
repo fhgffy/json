@@ -1,4 +1,3 @@
-#include <iomanip>
 #include <iostream>
 #include <nlohmann/json.hpp>
 
@@ -21,13 +20,6 @@ int main()
               << j_invalid.dump(-1, ' ', false, json::error_handler_t::replace)
               << "\nstring with ignored invalid characters: "
               << j_invalid.dump(-1, ' ', false, json::error_handler_t::ignore)
-              << '\n';
-
-    // the invalid byte is kept; print the result byte-wise to make it visible
-    std::cout << "string with kept invalid characters:";
-    for (const unsigned char c : j_invalid.dump(-1, ' ', false, json::error_handler_t::keep))
-    {
-        std::cout << ' ' << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(c);
-    }
-    std::cout << '\n';
+              << "\nstring with the invalid byte kept as is (" << j_invalid.dump(-1, ' ', false, json::error_handler_t::keep).size()
+              << " bytes, not valid UTF-8 itself)\n";
 }
